@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <input type="email" name="" id="">
+        <h1>Welcom to [GAME TITLE]</h1>
     </div>
 </template>
 
