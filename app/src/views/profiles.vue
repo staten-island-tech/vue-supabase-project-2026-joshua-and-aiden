@@ -6,14 +6,14 @@
         Username: {{ profileStore.profile.username }}
       </p>
       <p>
-        Coins: {{ profileStore.profile.scores }}
+        Scores: {{ profileStore.profile.scores }}
       </p>
     </div>
   </main>
 </template>
 <script setup>
 import { onMounted } from 'vue'
-import { useProfileStore } from '../stores/profile'
+import { useProfileStore } from '../stores/profiles'
 import { supabase } from '../supabase'
 const profileStore = useProfileStore()
 onMounted(async () => {
