@@ -1,8 +1,8 @@
 <template>
-
-    <router-link class="returnBtn" to= '/' >Back</router-link>
-
     <div class="loginPage">
+
+        <router-link class="returnBtn" to= '/' >Back</router-link>
+
         <h3>Log In</h3>
         <p>Username</p>
         <input class="usernameBox" type="text" v-model="username" placeholder="Enter Username">
@@ -24,7 +24,7 @@
     .returnBtn{
         font-size: 16px;
         position: relative;
-        top: 150px;
+        bottom: 18px;
     }
     .loginPage{
         height: 500px;
@@ -33,7 +33,6 @@
         justify-self: center;
         text-align: left;
         box-sizing: border-box;
-        padding: 8px;
         padding-left: 20px;
         border-radius: 10px;
         position:relative;
@@ -43,22 +42,25 @@
         color: black;
         font-size: 45px;
         font-family: Georgia;
-        
+        position: relative;
+        top: -50px;
     }
     p{
         color: black;
         font-size: 25px;
+        position: relative;
+        top: -50px;
         
     }
     .usernameBox{
         position: relative;
-        top: -50px;
+        top: -95px;
         height: 20px;
         width: 300px;
     }
     .passwordBox{
         position: relative;
-        top: -50px;
+        top: -95px;
         height: 20px;
         width: 300px;
     }
@@ -69,7 +71,7 @@
         border-radius: 10px;
         background-color: rgb(63, 82, 177);
         position:relative;
-        top: 30px;
+        top: 10px;
         cursor: pointer;
     }
 </style>
