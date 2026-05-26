@@ -8,7 +8,7 @@
         <input class="usernameBox" type="text" v-model="username" placeholder="Enter Username">
 
         <p>Password</p>
-        <input class="passwordBox" type="text" v-model="password" placeholder="Enter Password">
+        <input class="passwordBox" type="password" v-model="password" placeholder="Enter Password">
 
         <button class="loginBtn">Log In</button>
     </div>
@@ -57,12 +57,16 @@
         top: -95px;
         height: 20px;
         width: 300px;
+        border-style: double;
+        border-radius: 5px;
     }
     .passwordBox{
         position: relative;
         top: -95px;
         height: 20px;
         width: 300px;
+        border-style: double;
+        border-radius: 5px;
     }
     .loginBtn{
         height: 45px;
@@ -73,5 +77,6 @@
         position:relative;
         top: 10px;
         cursor: pointer;
+        border-color: transparent;
     }
 </style>
