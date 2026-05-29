@@ -4,11 +4,11 @@
         <router-link class="returnBtn" to= '/' >Back</router-link>
 
         <h3>Log In</h3>
-        <p>Email Address</p>
-        <input class="usernameBox" type="text" v-model="email" placeholder="Enter Email Address" required>
+        <p>Username</p>
+        <input class="usernameBox" type="text" v-model="username" placeholder="Enter Username">
 
         <p>Password</p>
-        <input class="passwordBox" type="password" v-model="password" placeholder="Enter Password" required>
+        <input class="passwordBox" type="password" v-model="password" placeholder="Enter Password">
 
         <button class="loginBtn">Log In</button>
     </div>
@@ -16,9 +16,8 @@
 
 <script setup>
     import { ref } from 'vue';
-    const email = ref('');
+    const username = ref('');
     const password = ref('');
-    const isLoggedIn = ref(false);
 </script>
 
 <style scoped>
