@@ -1,4 +1,7 @@
 <template>
+
+    <div class="body">
+
     <div class="homepage">
         <h1>Welcome to [GAME TITLE]</h1>
     </div>
@@ -12,13 +15,16 @@
     <div class="signin">
         <h2>Sign In</h2>
     </div>
+
+    </div>
+
 </template>
 
 <script setup>
 
 </script>
 
-<style>
+<style scoped>
     .homepage{
         background-color: rgb(1, 6, 44);
         height: 400px;
@@ -39,7 +45,7 @@
         font-size: 20px;
         transform: translateY(10px);
     }
-    body{
+    .body{
         background-color: rgb(14, 51, 87);
         height: 1500px;
     }
