@@ -6,13 +6,13 @@
         <h1>Welcome to [GAME TITLE]</h1>
     </div>
 
-    <router-link to="/login">
-    <div class="login">
-        <h2>Log In</h2>
+    <router-link to="/signup">
+    <div class="signup">
+        <h2>Sign Up</h2>
     </div>
     </router-link>
 
-    <div class="signin">
+    <div class="signupBtn">
         <h2>Sign In</h2>
     </div>
 
@@ -50,7 +50,7 @@
         height: 1500px;
     }
 
-    .login{
+    .signup{
         background-color: rgb(79, 216, 163);
         font-size: 15px;
         height: 40px;
@@ -58,7 +58,7 @@
         position: relative;
         left: 80%;
     }
-    .signin{
+    .signupBtn{
         background-color: rgb(79, 216, 163);
         font-size: 15px;
         height: 40px;

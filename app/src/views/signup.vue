@@ -3,8 +3,11 @@
   <input v-model="email" type="email" placeholder="Enter Email"/>
   <label>Password</label>
   <input v-model="password" type="password" placeholder="Enter Password"/>
+  <label>First Name</label>
+  <input v-model="first_name" type="text" placeholder="Enter Name"/>
 
   <button @click.prevent="signUp">Sign Up</button>
+
   <p v-if="errorMsg">{{ errorMsg }}</p>
 
   <p v-if="successMsg">{{ successMsg }}</p>
@@ -18,21 +21,24 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const email = ref('')
 const password = ref('')
+const first_name = ref('')
 const errorMsg = ref('')
 const successMsg = ref('')
 
 const signUp = async () => {
   const { error } = await supabase.auth.signUp({
+    first_name: first_name.value,
     email: email.value,
     password: password.value
   })
   if (error) {
-    errorMsg.value = error.message 
+    errorMsg.value = error.message
+    console.log(error) 
     return
   
   } else {
-    successMsg.value = 'Sign Up Success'
-	setTimeout(() => router.push("/"), 1500)
+    successMsg.value = 'Sign Up Success. Please Wait.'
+	  setTimeout(() => router.push("/"), 2000)
   }
 }
 </script>
