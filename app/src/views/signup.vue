@@ -7,11 +7,13 @@
   <label>Password</label>
   <input v-model="password" type="password" placeholder="Enter Password"/>
 
-  <button @click.prevent="signUp">Sign Up</button>
+  <button @click.prevent;="signUp(); popUp()">Sign Up</button>
 
-  <p v-if="errorMsg">*{{ errorMsg }}</p>
+  <p v-if="errorMsg" class="formErrorMsg">*{{ errorMsg }}</p>
 
-  <p v-if="successMsg">{{ successMsg }}</p>
+  <p v-if="successMsg" class="formSuccess">{{ successMsg }}</p>
+
+  <p v-if="errMsgTellingUToFillForm" class="formErrorMsg">*{{ errMsgTellingUToFillForm }}</p>
   </div>
 </template>
 
@@ -25,8 +27,25 @@ const email = ref('')
 const password = ref('')
 const errorMsg = ref('')
 const successMsg = ref('')
+const errMsgTellingUToFillForm = ref('');
+
+function popUp() {
+  if(email.value === '' || password.value === '') {
+    errMsgTellingUToFillForm.value = 'Please Fill Out All Forms.'
+    errorMsg.value = '';
+    return false
+  } else {
+    errMsgTellingUToFillForm.value = '';
+    return true
+  }
+}
 
 const signUp = async () => {
+
+  if (popUp() === false) {
+    return
+  }
+
   const { error } = await supabase.auth.signUp({
     email: email.value,
     password: password.value
@@ -38,7 +57,7 @@ const signUp = async () => {
   
   } else {
     successMsg.value = 'Sign Up Success. Please Wait.'
-	  setTimeout(() => router.push("/"), 2000)
+	  setTimeout(() => router.push("/"), 1500)
   }
 }
 </script>
@@ -96,18 +115,25 @@ const signUp = async () => {
   }
   p{
     font-size: 15px;
-    transform: translate(230px, 80px);
+    transform: translate(150px, 80px);
   }
   p2{
     color: white;
+    text-align: center;
     position: relative;
-    top: 95px;
-    left: 140px;
+    top: 80px;
+    display: block;
     cursor: pointer;
     transition: color 0.5s ease;
   }
   p2:hover{
     color: rgb(2, 155, 250);
+  }
+  .formErrorMsg{
+    color: rgb(226, 0, 0);
+  }
+  .formSuccess{
+    color: rgb(1, 200, 1);
   }
 </style>
 
