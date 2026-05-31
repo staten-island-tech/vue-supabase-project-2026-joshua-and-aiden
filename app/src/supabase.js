@@ -4,7 +4,7 @@ const url = import.meta.env.VITE_SUPABASE_URL
 const key = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!url || !key) {
-  console.warn('Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY in environment')
+  throw new Error("Missing Supabase env variables")
 }
 
-export const supabase = url && key ? createClient(url, key) : null
+export const supabase = createClient(url, key)
