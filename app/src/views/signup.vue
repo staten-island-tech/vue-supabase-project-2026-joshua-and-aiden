@@ -6,6 +6,8 @@
   <input v-model="email" type="email" placeholder="Enter Email"/>
   <label>Password</label>
   <input v-model="password" type="password" placeholder="Enter Password"/>
+  <label>Confirm Password</label>
+  <input type="password" placeholder="Reenter Password"/>
 
   <button @click.prevent;="signUp(); popUp()">Sign Up</button>
 
