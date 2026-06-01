@@ -1,28 +1,38 @@
 import { defineStore } from 'pinia'
-<<<<<<< HEAD
-import { supabase } from 
-=======
-import { ref } from 'vue'
 import { supabase } from '../supabase'
-
-export const useProfileStore = defineStore('profile', () => {
-	const profile = ref(null)
-
-	async function fetchProfile(id) {
-		try {
-			const { data, error } = await supabase
-				.from('profiles')
-				.select('*')
-				.eq('id', id)
-				.single()
-			if (error) throw error
-			profile.value = data
-		} catch (err) {
-			console.error('fetchProfile error', err)
-			profile.value = null
-		}
-	}
-
-	return { profile, fetchProfile }
+export const useProfileStore = defineStore('profiles', {
+  state: () => ({
+    profile: null,
+    loading: false,
+    error: null
+  }),
+  actions: {
+    async fetchProfile(userId) {
+      this.loading = true
+      this.error = null
+      try {
+        const { data, error } = await supabase
+          .select('*')
+          .eq('id', userId)
+          .single()
+        if (error) {
+          this.error = error
+          console.error('fetchProfile error', error)
+          return
+        }
+        this.profile = data
+         if (!data) {
+          this.profile = null
+          this.error = { message: 'Profile not found' }
+          return
+        }
+        this.profile = data
+      } catch (err) {
+        this.error = err
+        console.error('fetchProfile exception', err)
+      } finally {
+        this.loading = false
+      }
+    }
+  }
 })
->>>>>>> main
