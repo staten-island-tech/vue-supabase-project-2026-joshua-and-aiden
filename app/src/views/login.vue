@@ -1,108 +1,96 @@
-<<<<<<< HEAD
 <template>
-    <div class="loginPage">
-        <h3>Log In</h3>
-        <p>Username</p>
-        <input class="usernameBox" type="text" v-model="username" placeholder="Enter Username">
+    
+    <p2 @click="returnback"> -RETURN- </p2>
 
-        <p>Password</p>
-        <input class="passwordBox" type="text" v-model="password" placeholder="Enter Password">
+    <div class="loginBox">
+        <p1>Welcome Back</p1>
+        <label>Email</label>
+        <input v-model="email" type="email" placeholder="Enter Email"/>
+        <label>Password</label>
+        <input v-model="password" type="password" placeholder="Enter Password"/>
+        <button @click.prevent;="login(); popUp()">Login</button>
+
+        <p v-if="errorMsg" class="formErrorMsg">*{{ errorMsg }}</p>
+
+        <p v-if="successMsg" class="formSuccess">{{ successMsg }}</p>
+
+        <p v-if="errMsgTellingUToFillForm" class="formErrorMsg">*{{ errMsgTellingUToFillForm }}</p>
+
     </div>
 </template>
 
-<script setup>
-    import { ref } from 'vue';
-    const username = ref('');
-    const password = ref('');
-</script>
+<script setup> //Email: testuser1234@gmail.com  Password: test1234
+import { useRouter } from 'vue-router';
+import { supabase } from '@/supabase';
+import { email, password, errorMsg, successMsg, errMsgTellingUToFillForm } from '../stores/loginsignup'
 
-<style scoped>
-    .loginPage{
-        height: 500px;
-        width: 450px;
-        background-color: white;
-        justify-self: center;
-        text-align: left;
-        box-sizing: border-box;
-        padding: 10px;
-    }
-    h3{
-        color: black;
-        font-size: 45px;
-        font-family: Georgia;
-        
-    }
-    p{
-        color: black;
-        font-size: 25px;
-        
-    }
-    .usernameBox{
-        position: relative;
-        top: -50px;
-        height: 20px;
-        width: 300px;
-    }
-    .passwordBox{
-        position: relative;
-        top: -50px;
-        height: 20px;
-        width: 300px;
-    }
-</style>
-=======
-<script setup>
-import { ref } from 'vue'
-import { supabase } from '@/supabase'
-import { useRouter } from 'vue-router'
+const router = useRouter();
 
-const router = useRouter()
+function returnback() {
+    router.push('/');
+    errorMsg.value = '';
+    successMsg.value = '';
+    errMsgTellingUToFillForm.value = '';
+    email.value = '';
+    password.value = '';
+}
 
-const email = ref('')
-const password = ref('')
-const loading = ref(false)
-const errorMsg = ref(null)
+function popUp() {
+  if(email.value === '' || password.value === '') {
+    errMsgTellingUToFillForm.value = 'Please Fill Out All Forms.'
+    errorMsg.value = '';
+    return false
+  } else {
+    errMsgTellingUToFillForm.value = '';
+    return true
+  }
+}
 
-async function handleLogin() {
-  errorMsg.value = null
-  loading.value = true
+const login = async () => {
+
+  if (popUp() === false) {
+    return
+  }
 
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
-    password: password.value,
+    password: password.value
   })
-
   if (error) {
     errorMsg.value = error.message
-    loading.value = false
+    console.log(error) 
     return
+  
+  } else {
+    successMsg.value = 'Logging In. Please Wait.'
+	  setTimeout(() => router.push("/game"), 1500)
+      errorMsg.value = '';
+      errMsgTellingUToFillForm.value = '';
+      email.value = '';
+      password.value = '';
+      setTimeout(() => successMsg.value = '', 1510)
+    }
   }
-  router.push({ name: 'welcome' })
-  loading.value = false
-}
 </script>
 
-<template>
-  <div class="login">
-    <h2>Login</h2>
-
-    <form @submit.prevent="handleLogin">
-      <div>
-        <label>Email</label>
-        <input v-model="email" type="email" autocomplete="email" required />
-      </div>
-
-      <div>
-        <label>Password</label>
-        <input v-model="password" type="password" autocomplete="current-password" required />
-      </div>
-
-      <button type="submit" :disabled="loading">
-        {{ loading ? "Logging in..." : "Login" }}
-      </button>
-
-      <p v-if="errorMsg" style="color: red">{{ errorMsg }}</p>
-    </form>
-  </div>
-</template>
->>>>>>> main
+<style>
+    .loginBox{
+    position: relative;
+    height: 420px;
+    width: 455px;
+    justify-self: center;
+    background-color: white;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    padding-top: 30px;
+    border-radius: 10px;
+  }
+  .formErrorMsg{
+    color: rgb(226, 0, 0);
+  }
+  .formSuccess{
+    color: rgb(1, 200, 1);
+  }
+</style>

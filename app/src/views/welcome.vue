@@ -1,31 +1,40 @@
 <template>
+
+    
     <div class="homepage">
         <h1>Welcome to [GAME TITLE]</h1>
     </div>
 
-    <router-link to="/login">
-    <div class="login">
-        <h2>Log In</h2>
+    <div class="signup" @click="signupBtn">
+        <h2>Sign Up</h2>
     </div>
-    </router-link>
 
-    <div class="signin">
-        <h2>Sign In</h2>
+    <div class="login" @click="loginBtn">
+        <h2>Login</h2>
     </div>
+
+
 </template>
 
 <script setup>
+    import { useRouter } from 'vue-router';
+    const router = useRouter();
 
+    function signupBtn() {
+        router.push('/signup')
+    }
+    function loginBtn() {
+        router.push('/login')
+    }
 </script>
 
 <style>
     .homepage{
         background-color: rgb(1, 6, 44);
         height: 400px;
-        width: 100%;
         position: relative;
-        top: -35px;
-        padding: 10px;
+        bottom: 35px;
+        padding-top: 30px;
     }
     h1{
         color: rgb(124, 241, 177);
@@ -35,29 +44,35 @@
     h2{
         color: black;
         font-weight: 10;
-        font-family: Times New Roman;
+        font-family: "inter", sans-serif;
         font-size: 20px;
         transform: translateY(10px);
     }
     body{
         background-color: rgb(14, 51, 87);
-        height: 1500px;
+        background-size: cover;
+        margin: 0px;
+        padding: 0px;
     }
 
-    .login{
+    .signup,.login{
         background-color: rgb(79, 216, 163);
         font-size: 15px;
         height: 40px;
         width: 80px;
         position: relative;
         left: 80%;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 15px;
+        transition: transform 0.5s ease;
     }
-    .signin{
-        background-color: rgb(79, 216, 163);
-        font-size: 15px;
-        height: 40px;
-        width: 80px;
-        position: relative;
-        left: 80%;
+    .signup:hover{
+        background-color: rgb(59, 157, 119);
+        transform: scale(1.1);
+    }
+    .login:hover{
+        background-color: rgb(59, 157, 119);
+        transform: scale(1.1);
     }
 </style>
