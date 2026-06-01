@@ -85,6 +85,7 @@ const signUp = async () => {
     margin-top: 100px;
     padding-top: 30px;
     border-radius: 10px;
+    box-shadow: 0 0 18px 6px rgba(0, 183, 255, 0.301);
   }
   label {
     font-size: 25px;
