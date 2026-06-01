@@ -9,7 +9,7 @@
         <h2>Sign Up</h2>
     </div>
 
-    <div class="login">
+    <div class="login" @click="loginBtn">
         <h2>Login</h2>
     </div>
 
@@ -18,10 +18,13 @@
 
 <script setup>
     import { useRouter } from 'vue-router';
-    const toSignupPage = useRouter();
+    const router = useRouter();
 
     function signupBtn() {
-        toSignupPage.push('/signup')
+        router.push('/signup')
+    }
+    function loginBtn() {
+        router.push('/login')
     }
 </script>
 
@@ -52,7 +55,7 @@
         padding: 0px;
     }
 
-    .signup{
+    .signup,.login{
         background-color: rgb(79, 216, 163);
         font-size: 15px;
         height: 40px;
@@ -68,14 +71,8 @@
         background-color: rgb(59, 157, 119);
         transform: scale(1.1);
     }
-    .login{
-        background-color: rgb(79, 216, 163);
-        font-size: 15px;
-        height: 40px;
-        width: 80px;
-        position: relative;
-        left: 80%;
-        text-align: center;
-        border-radius: 15px;
+    .login:hover{
+        background-color: rgb(59, 157, 119);
+        transform: scale(1.1);
     }
 </style>

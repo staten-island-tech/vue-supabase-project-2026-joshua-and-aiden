@@ -3,6 +3,7 @@ import welcome from '@/views/welcome.vue'
 import signup from '@/views/signup.vue'
 import profiles from '@/views/profiles.vue'
 import login from '@/views/login.vue'
+import game from '@/views/game.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/game',
+      name: 'game',
+      component: game
     }
   ],
 })

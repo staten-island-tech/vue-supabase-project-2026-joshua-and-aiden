@@ -1,13 +1,11 @@
 <template>
-  <p2 @click="router.push('/')"> -RETURN- </p2>
+  <p2 @click="returnback"> -RETURN- </p2>
   <div class="signupBox">
   <p1>Create Account</p1>
   <label>Email</label>
   <input v-model="email" type="email" placeholder="Enter Email"/>
   <label>Password</label>
   <input v-model="password" type="password" placeholder="Enter Password"/>
-  <label>Confirm Password</label>
-  <input type="password" placeholder="Reenter Password"/>
 
   <button @click.prevent;="signUp(); popUp()">Sign Up</button>
 
@@ -23,13 +21,18 @@
 import { ref } from 'vue'
 import { supabase } from '@/supabase'
 import { useRouter } from 'vue-router'
+import { email, password, errorMsg, successMsg, errMsgTellingUToFillForm } from '../stores/loginsignup'
 
 const router = useRouter()
-const email = ref('')
-const password = ref('')
-const errorMsg = ref('')
-const successMsg = ref('')
-const errMsgTellingUToFillForm = ref('');
+
+function returnback() {
+    router.push('/');
+    errorMsg.value = '';
+    successMsg.value = '';
+    errMsgTellingUToFillForm.value = '';
+    email.value = '';
+    password.value = '';
+}
 
 function popUp() {
   if(email.value === '' || password.value === '') {
@@ -58,8 +61,13 @@ const signUp = async () => {
     return
   
   } else {
-    successMsg.value = 'Sign Up Success. Please Wait.'
-	  setTimeout(() => router.push("/"), 1500)
+    successMsg.value = 'Account Created. Please Wait.'
+	  setTimeout(() => router.push("/game"), 1500)
+    errorMsg.value = '';
+    errMsgTellingUToFillForm.value = '';
+    email.value = '';
+    password.value = '';
+    setTimeout(() => successMsg.value = '', 1510)
   }
 }
 </script>
@@ -67,7 +75,7 @@ const signUp = async () => {
 <style>
   .signupBox{
     position: relative;
-    height: 400px;
+    height: 420px;
     width: 455px;
     justify-self: center;
     background-color: white;
