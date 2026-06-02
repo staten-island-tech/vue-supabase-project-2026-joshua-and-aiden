@@ -14,12 +14,19 @@ onMounted(() => {
   const ctx = canvas.value.getContext('2d')
   
   const player = { 
-    x: 100,
-    y: 100,
+    x: 300,
+    y: 300,
     w: 40, 
     h: 40, 
     speed: 10, 
     velocityY: 0}
+
+  const obstacle = {
+    x: 600,
+    y: 340,
+    w: 80,
+    h: 300
+  }
 
   const keys = {}
   const gravity = 0.5
@@ -32,6 +39,17 @@ onMounted(() => {
     if (keys['ArrowLeft'])  player.x -= player.speed
     if (keys['ArrowRight']) player.x += player.speed
     if (keys['ArrowUp']) player.velocityY = -8  
+  }
+
+  function barrier() {
+    if(player.y > obstacle.h && player.x < obstacle.w) {
+      player.y = obstacle.h
+      player.x = obstacle.w
+      player.velocityY = 0
+      isOnGround = true
+    } else {
+      isOnGround = false
+    }
   }
   
   function leftWall() {
@@ -62,6 +80,7 @@ onMounted(() => {
     ctx.clearRect(0, 0, 800, 600)
     ctx.fillStyle = '#4f46e5'
     ctx.fillRect(player.x, player.y, player.w, player.h)
+    ctx.fillRect(obstacle.x, obstacle.y, obstacle.w, obstacle.h)
 }
   function move() {
     player.velocityY += gravity
@@ -75,6 +94,8 @@ onMounted(() => {
     bottomWall()
     topWall()
     draw()
+    barrier()
+    obstacle
     animationId = requestAnimationFrame(loop)
   }
 
