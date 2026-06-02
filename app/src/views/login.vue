@@ -19,7 +19,7 @@
     </div>
 </template>
 
-<script setup> //Email: testuser1234@gmail.com  Password: test1234
+<script setup> 
 import { useRouter } from 'vue-router';
 import { supabase } from '@/supabase';
 import { email, password, errorMsg, successMsg, errMsgTellingUToFillForm } from '../stores/loginsignup'
