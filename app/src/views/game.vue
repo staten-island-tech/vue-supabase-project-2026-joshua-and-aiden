@@ -86,6 +86,11 @@ onMounted(() => {
     player.velocityY += gravity
     player.y += player.velocityY
 }
+  function gameOver() {
+    if(isOnGround = true) {
+      
+    }
+  }
   function loop() {
     update()
     move()
@@ -95,6 +100,7 @@ onMounted(() => {
     topWall()
     draw()
     barrier()
+    gameOver()
     obstacle
     animationId = requestAnimationFrame(loop)
   }
