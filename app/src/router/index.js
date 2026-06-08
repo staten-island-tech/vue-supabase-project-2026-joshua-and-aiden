@@ -23,12 +23,12 @@ const router = createRouter({
       {
       path: '/profiles',
       name: 'profiles',
-      component: profiles,
+      component: profiles
     },
     {
       path: '/login',
       name: 'login',
-      component: login,
+      component: login
     },
     {
       path: '/game',
@@ -49,7 +49,7 @@ router.beforeEach(async (to) => {
     const { data } = await supabase.auth.getSession()
     if (data?.session?.user) return true
   } catch (err) {
-    // ignore
+
   }
 
   // Not authenticated — redirect to login with redirect back
