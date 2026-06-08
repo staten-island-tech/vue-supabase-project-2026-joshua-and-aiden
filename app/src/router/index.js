@@ -41,19 +41,18 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  if (to.meta.requiresAuth) {
-     return true 
-  }
+  // If route doesn't require auth, allow immediately
+  if (!to.meta?.requiresAuth) return true
 
+  // Check current session with Supabase
   try {
-    const { data } = await supabase.auth.getUser()
-    if (data?.user) {
-      return true
-    }
+    const { data } = await supabase.auth.getSession()
+    if (data?.session?.user) return true
   } catch (err) {
-
+    // ignore
   }
 
+  // Not authenticated — redirect to login with redirect back
   return { name: 'login', query: { redirect: to.fullPath } }
 })
 
