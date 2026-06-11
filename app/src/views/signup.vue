@@ -18,7 +18,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { supabase } from '@/supabase'
 import { useRouter } from 'vue-router'
 import { email, password, errorMsg, successMsg, errMsgTellingUToFillForm } from '../stores/loginsignup'
