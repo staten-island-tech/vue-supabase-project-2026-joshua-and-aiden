@@ -7,7 +7,7 @@
   <label>Password</label>
   <input v-model="password" type="password" placeholder="Enter Password"/>
 
-  <button @click.prevent;="signUp(); popUp()">Sign Up</button>
+  <button @click="signUp()">Sign Up</button>
 
   <p v-if="errorMsg" class="formErrorMsg">*{{ errorMsg }}</p>
 
