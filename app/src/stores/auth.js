@@ -37,22 +37,23 @@ export const useAuthStore = defineStore('auth', {
         this.loading = false
       }
     },
-    async signUp(email, password, username) {
-      this.loading = true
-      this.error = null
-      try {
-        const { data, error } = await supabase.auth.signUp({ email, password })
-        if (error) throw error
-        const user = data.user
-        await supabase.from('profiles').insert([{ id: user.id, username }])
-        this.user = user
-        await router.push('/profiles')
-        return user
-      } catch (err) {
-        this.error = err
-        throw err
-      } finally {
-        this.loading = false
+async signUp(email, password, username) {
+  this.loading = true
+  this.error = null
+  try {
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (error) throw error
+    const user = data.user
+    await supabase.from('profiles').insert([{ id: user.id, first_name: username }]).maybeSingle()
+    await supabase.from('scores').insert([{ user_id: user.id, score_balance: 0 }]).maybeSingle()
+    this.user = user
+    await router.push('/game')
+    return user
+  } catch (err) {
+    this.error = err
+    throw err
+  } finally {
+    this.loading = false
       }
     },
     async signOut() {
