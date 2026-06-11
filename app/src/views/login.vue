@@ -8,7 +8,7 @@
         <input v-model="email" type="email" placeholder="Enter Email"/>
         <label>Password</label>
         <input v-model="password" type="password" placeholder="Enter Password"/>
-        <button @click.prevent;="login(); popUp()">Login</button>
+        <button @click="login()">Login</button>
 
         <p v-if="errorMsg" class="formErrorMsg">*{{ errorMsg }}</p>
 
