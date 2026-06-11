@@ -5,11 +5,8 @@ import router from './router'
 import { useAuthStore } from './stores/auth'
 
 const app = createApp(App)
-const pinia = createPinia()
+
 app.use(createPinia())
 app.use(router)
-
-const auth = useAuthStore()
-auth.init()
 
 app.mount('#app')
