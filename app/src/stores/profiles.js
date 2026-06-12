@@ -11,7 +11,7 @@ export const useProfileStore = defineStore('profiles', {
       this.loading = true
       this.error = null
       try {
-        const { data, error } = await supabase
+        const { data: prof, error: profErr } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', userId)
@@ -23,7 +23,6 @@ export const useProfileStore = defineStore('profiles', {
           .eq('user_id', userId)
           .maybeSingle()
         if (scoreErr) throw scoreErr
-
         this.profile = {
           ...(prof ?? {}),
           score_balance: scoreRow?.score_balance ?? 0
@@ -52,7 +51,10 @@ export const useProfileStore = defineStore('profiles', {
           .from('score_ledger')
           .insert([{ user_id: userId, score_balance: newScore }])
         if (ledgerErr) console.warn('ledger insert warning', ledgerErr)
-        this.profile = { ...(this.profile ?? {}), score_balance: updatedScore?.score_balance ?? newScore }
+      this.profile = {
+      ...(this.profile ?? {}),
+      score_balance: updatedScore?.score_balance ?? newScore
+      }
       } catch (err) {
         this.error = err
         console.error('updateScore exception', err)
