@@ -5,7 +5,7 @@ import profiles from '@/views/profiles.vue'
 import login from '@/views/login.vue'
 import game from '@/views/game.vue'
 import { supabase } from '@/supabase'
-
+import { useAuthStore } from '@/stores/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -39,5 +39,14 @@ const router = createRouter({
   ],
 })
 
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuthStore()
+  // ensure auth state is loaded once
+  if (!auth.user && !auth.loading) await auth.init()
+  if (to.meta?.requiresAuth && !auth.user) {
+    return next({ name: 'login' })
+  }
+  next()
+})
 
 export default router
