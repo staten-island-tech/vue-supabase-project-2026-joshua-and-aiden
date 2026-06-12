@@ -41,16 +41,7 @@ onMounted(() => {
     if (keys['ArrowUp']) player.velocityY = -8  
   }
 
-  function barrier() {
-    if(player.y > obstacle.h && player.x < obstacle.w) {
-      player.y = obstacle.h
-      player.x = obstacle.w
-      player.velocityY = 0
-      isOnGround = true
-    } else {
-      isOnGround = false
-    }
-  }
+
   
   function leftWall() {
   if(player.x < 0) {
@@ -99,7 +90,7 @@ onMounted(() => {
     bottomWall()
     topWall()
     draw()
-    barrier()
+  
     gameOver()
     obstacle
     animationId = requestAnimationFrame(loop)

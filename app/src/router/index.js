@@ -22,7 +22,8 @@ const router = createRouter({
       {
       path: '/profiles',
       name: 'profiles',
-      component: profiles
+      component: profiles,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -35,9 +36,19 @@ const router = createRouter({
       component: game,
       meta: { requiresAuth: true }
     },
-    
   ],
-})
 
+  })
+   
+  router.beforeEach(async(to) => {
+    const { data: { session }} = await supabase.auth.getSession()
+
+    if(to.meta.requiresAuth && !session) {
+      return {name: 'welcome'}
+    } else if(to.name === 'welcome' && session) {
+      return {name: 'game'}
+    }
+   
+   })
 
 export default router
