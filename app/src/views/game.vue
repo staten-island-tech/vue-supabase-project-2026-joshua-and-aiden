@@ -1,114 +1,35 @@
 <template>
-    <div class="canvasBox">
-        <canvas ref="canvas" width="800" height="600"></canvas>
-    </div>
+  <div>
+    <button  @click ='logOut()' class="signOut">Log Out</button>
+    <p v-if="logOutMsg">{{ logOutMsg }}</p>
+  </div>
 </template>
 
 <script setup>
-    import { ref, onMounted, onUnmounted } from 'vue'
+  import { supabase } from '@/supabase';
+  import { logOutMsg } from '@/stores/loginsignup';
+  import { useRouter } from 'vue-router';
 
-const canvas = ref(null)
-let animationId
+  const router = useRouter();
 
-onMounted(() => {
-  const ctx = canvas.value.getContext('2d')
-  
-  const player = { 
-    x: 300,
-    y: 300,
-    w: 40, 
-    h: 40, 
-    speed: 10, 
-    velocityY: 0
-  }
-
-  const obstacle = {
-    x: 600,
-    y: 340,
-    w: 80,
-    h: 300
-  }
-
-  const keys = {}
-  const gravity = 1.5
-  let isOnGround = false
-
-  window.addEventListener('keydown', e => keys[e.key] = true)
-  window.addEventListener('keyup',   e => keys[e.key] = false)
-
-  function update() {
-    if (keys['ArrowLeft'])  player.x -= player.speed
-    if (keys['ArrowRight']) player.x += player.speed
-    if (keys['ArrowUp']) player.velocityY = -15
-  }
-
-  
-  function leftWall() {
-  if(player.x < 0) {
-    player.x = 0
-  }  
-}
-  function rightWall() {
-    if(player.x >= 760) {
-    player.x = 760
-  }
-}
-  function bottomWall() {
-    if(player.y >= 560) {
-      player.y = 560
-      player.velocityY = 0
-      isOnGround = true
+  async function logOut() {
+  const { error } = await supabase.auth.signOut() 
+    if(error) {
+      console.log(error)
     } else {
-      isOnGround = false
+      setTimeout(() => router.push("/"), 1500)
+      logOutMsg.value = 'Logging Out...'
     }
-}
-  function topWall() {
-    if(player.y <= 0) {
-      player.y = 0
-    }
-}
-  function draw() {
-    ctx.clearRect(0, 0, 800, 600)
-    ctx.fillStyle = '#4f46e5'
-    ctx.fillRect(player.x, player.y, player.w, player.h)
-    ctx.fillRect(obstacle.x, obstacle.y, obstacle.w, obstacle.h)
-}
-  function move() {
-    player.velocityY += gravity
-    player.y += player.velocityY
-}
-  function gameOver() {
-    if(isOnGround) {
-      
-    }
-  }
-  function loop() {
-    update()
-    move()
-    leftWall()
-    rightWall()
-    bottomWall()
-    topWall()
-    draw()
-  
-    gameOver()
-    animationId = requestAnimationFrame(loop)
-  }
-
-  loop()
-})
-
-onUnmounted(() => cancelAnimationFrame(animationId))
+   }
+    
+   window.addEventListener('load', function() {
+      const canvas = document.getElementById('canvas1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 500;
+      canvas.height = 500;
+    });
 </script>
 
-<style>
-    canvas{
-        background-color: white;
-        border-color: black;
-    }
-    .canvasBox{
-      justify-self: center;
-      position: relative;
-      top: 80px;
-    }
+<style scoped>
+
 </style>
