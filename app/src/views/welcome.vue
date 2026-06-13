@@ -1,6 +1,5 @@
 <template>
 
-    
     <div class="homepage">
         <h1>Welcome to [GAME TITLE]</h1>
     </div>
@@ -12,7 +11,6 @@
     <div class="login" @click="loginBtn">
         <h2>Login</h2>
     </div>
-
 
 </template>
 

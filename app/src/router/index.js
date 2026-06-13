@@ -46,7 +46,7 @@ const router = createRouter({
     if(to.meta.requiresAuth && !session) {
       return {name: 'welcome'}
     } else if(to.name === 'welcome' && session) {
-      return {name: 'game'}
+      return true
     }
    
    })

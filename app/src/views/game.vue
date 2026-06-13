@@ -19,7 +19,8 @@ onMounted(() => {
     w: 40, 
     h: 40, 
     speed: 10, 
-    velocityY: 0}
+    velocityY: 0
+  }
 
   const obstacle = {
     x: 600,
@@ -29,7 +30,7 @@ onMounted(() => {
   }
 
   const keys = {}
-  const gravity = 0.5
+  const gravity = 1.5
   let isOnGround = false
 
   window.addEventListener('keydown', e => keys[e.key] = true)
@@ -38,9 +39,8 @@ onMounted(() => {
   function update() {
     if (keys['ArrowLeft'])  player.x -= player.speed
     if (keys['ArrowRight']) player.x += player.speed
-    if (keys['ArrowUp']) player.velocityY = -8  
+    if (keys['ArrowUp']) player.velocityY = -15
   }
-
 
   
   function leftWall() {
@@ -78,7 +78,7 @@ onMounted(() => {
     player.y += player.velocityY
 }
   function gameOver() {
-    if(isOnGround = true) {
+    if(isOnGround) {
       
     }
   }
@@ -92,7 +92,6 @@ onMounted(() => {
     draw()
   
     gameOver()
-    obstacle
     animationId = requestAnimationFrame(loop)
   }
 
