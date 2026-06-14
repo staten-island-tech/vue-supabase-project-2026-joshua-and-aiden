@@ -1,13 +1,8 @@
 <template>
-    <div class="leaderboard">
-        <li>{{  }}</li>
-    </div>
+  <div></div>
 </template>
 
-<script setup>
-    import { supabase } from '@/supabase';
-</script>
+<script setup></script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
+<style scoped></style>

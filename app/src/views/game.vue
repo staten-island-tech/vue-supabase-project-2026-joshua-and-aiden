@@ -7,10 +7,9 @@
   <canvas id="canvas1"></canvas>
 
   <div v-if="gameOver" class="game-over-card">
-      <h1>Game Over</h1>
-      <h4>Click the Screen to Restart</h4>
-    </div>
-    <leaderboard/>
+    <h1>Game Over</h1>
+    <h4>Click the Screen to Restart</h4>
+  </div>
 </template>
 
 <script setup>
@@ -20,7 +19,6 @@ import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useProfileStore } from '@/stores/profiles'
-import leaderboard  from '@/components/leaderboard.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -157,7 +155,7 @@ onMounted(async () => {
       player.x = canvas.width - player.w
     }
 
-    difficulty += increment;
+    difficulty += increment
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     player.velocityY += gravity
@@ -179,7 +177,7 @@ onMounted(async () => {
       if (!obstacle.passed && prevRight >= player.x && currRight < player.x) {
         obstacle.passed = true
         const award = 1
-        runScore += award/2
+        runScore += award / 2
         floats.push({ x: obstacle.x + obstacle.w / 2, y: obstacle.y, text: `+${award}`, life: 60 })
       }
 
@@ -195,7 +193,7 @@ onMounted(async () => {
         player.y + player.h > obstacle.y
       ) {
         gameOver.value = true
-      
+
         if (auth.user && runScore > 0) {
           profileStore
             .updateScore(auth.user.id, runScore)
@@ -256,7 +254,7 @@ p {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.game-over-card{
+.game-over-card {
   position: relative;
   text-align: center;
   top: 320px;
