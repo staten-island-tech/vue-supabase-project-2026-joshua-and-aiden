@@ -9,7 +9,7 @@
       <p>Error: {{ profileStore.error.message || profileStore.error }}</p>
     </div>
     <div v-else-if="profile" class="statUser">
-      <p>Email: {{ profileDisplayName }}</p>
+      <p>Username: {{ profileDisplayName }}</p>
       <p>Score: {{ profile.score_balance ?? profile.scores ?? 0 }}</p>
     </div>
     <div v-else>
@@ -35,11 +35,13 @@ onMounted(async () => {
 })
 const profile = computed(() => profileStore.profile)
 const profileDisplayName = computed(() => {
-  if (!profile.value) return auth.user?.email || ''
+  if (!profile.value) return auth.user?.user_metadata?.username || auth.user?.email || ''
+  if (profile.value.username) return profile.value.username
   if (profile.value.first_name) return profile.value.first_name
   const fullName = `${profile.value.first_name ?? ''} ${profile.value.last_name ?? ''}`.trim()
-  return fullName || auth.user?.email || ''
+  return fullName || auth.user?.user_metadata?.username || auth.user?.email || ''
 })
+
 </script>
 <style scoped>
   .statUser {
@@ -50,7 +52,7 @@ const profileDisplayName = computed(() => {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -78%);
+    transform: translate(-50%, -72%);
   }
   p{
     font-size: 25px;

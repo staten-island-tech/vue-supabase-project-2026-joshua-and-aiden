@@ -2,8 +2,6 @@
   <p2 @click="returnback"> -RETURN- </p2>
   <div class="signupBox">
   <p1>Create Account</p1>
-  <label>Username</label>
-  <input v-model="username" type="text" placeholder="Choose a username" />
   <label>Email</label>
   <input v-model="email" type="email" placeholder="Enter Email"/>
   <label>Password</label>
@@ -20,10 +18,10 @@
 </template>
 
 <script setup>
-import { supabase } from '@/supabase'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
-import { username, email, password, errorMsg, successMsg, errMsgTellingUToFillForm } from '../stores/loginsignup'
+import { email, password, errorMsg, successMsg, errMsgTellingUToFillForm } from '../stores/loginsignup'
+
 
 const router = useRouter()
 
@@ -32,13 +30,12 @@ function returnback() {
     errorMsg.value = '';
     successMsg.value = '';
     errMsgTellingUToFillForm.value = '';
-    username.value = '';
     email.value = '';
     password.value = '';
 }
 
 function popUp() {
-  if(username.value === '' || email.value === '' || password.value === '') {
+  if(email.value === '' || password.value === '') {
     errMsgTellingUToFillForm.value = 'Please Fill Out All Forms.'
     errorMsg.value = '';
     return false
@@ -67,12 +64,12 @@ const signUp = async () => {
 	  setTimeout(() => router.push("/game"), 1500)
     errorMsg.value = '';
     errMsgTellingUToFillForm.value = '';
-    username.value = '';
     email.value = '';
     password.value = '';
     setTimeout(() => successMsg.value = '', 1510)
   }
 }
+
 </script>
 
 <style>
