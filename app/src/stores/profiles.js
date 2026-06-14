@@ -40,7 +40,11 @@ export const useProfileStore = defineStore('profiles', {
       this.error = null
       try {
         const current = Number(this.profile?.score_balance ?? 0)
-        const newScore = current + Number(delta)
+        const runScore = Number(delta)
+        const newScore = Math.max(current, runScore)
+        if (newScore === current) {
+          return
+        }
         const { data: updatedScore, error: upsertErr } = await supabase
           .from('scores')
           .upsert({ user_id: userId, score_balance: newScore }, { onConflict: 'user_id' })

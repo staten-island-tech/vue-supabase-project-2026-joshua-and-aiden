@@ -4,19 +4,27 @@
     <p v-if="logOutMsg">{{ logOutMsg }}</p>
   </div>
   <canvas id="canvas1"></canvas>
+
+  <div v-if="gameOver" class="game-over-card">
+      <h1>Game Over</h1>
+      <h4>Click the Screen to Restart</h4>
+    </div>
+    <leaderboard/>
 </template>
 
 <script setup>
 import { supabase } from '@/supabase'
 import { logOutMsg } from '@/stores/loginsignup'
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useProfileStore } from '@/stores/profiles'
+import leaderboard  from '@/components/leaderboard.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
 const profileStore = useProfileStore()
+const gameOver = ref(false)
 
 async function logOut() {
   const { error } = await supabase.auth.signOut()
@@ -47,43 +55,56 @@ onMounted(async () => {
     velocityY: 0,
   }
 
-  const obstacles = [
+  const initialObstacles = [
     {
       x: 300,
       y: 380,
-      w: 80,
+      w: 50,
       h: 300,
-      speed: 5,
+      speed: 3,
     },
     {
       x: 300,
       y: -150,
-      w: 80,
+      w: 50,
       h: 300,
-      speed: 5,
+      speed: 3,
     },
     {
       x: 600,
       y: 0,
-      w: 80,
+      w: 50,
       h: 80,
       speed: 3,
     },
     {
       x: 600,
       y: 300,
-      w: 80,
+      w: 50,
       h: 300,
       speed: 3,
     },
   ]
 
+  const obstacles = initialObstacles.map((obstacle) => ({ ...obstacle }))
   const keys = {}
   const gravity = 1
   let upPressed = false
-  let gameOver = false
   let runScore = 0
   let floats = []
+  let difficulty = 1
+  const increment = 0.0005
+
+  function resetGame() {
+    player.x = 30
+    player.y = 30
+    player.velocityY = 0
+    runScore = 0
+    floats = []
+    gameOver.value = false
+    difficulty = 1
+    obstacles.splice(0, obstacles.length, ...initialObstacles.map((obstacle) => ({ ...obstacle })))
+  }
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowUp' && !upPressed) {
@@ -101,7 +122,7 @@ onMounted(async () => {
   })
 
   function animate() {
-    if (gameOver === true) {
+    if (gameOver.value === true) {
       ctx.font = '50px Montana'
       ctx.fillStyle = 'red'
       ctx.fillText('GAME OVER', 290, 300)
@@ -131,6 +152,7 @@ onMounted(async () => {
       player.x = canvas.width - player.w
     }
 
+    difficulty += increment;
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     player.velocityY += gravity
@@ -146,13 +168,13 @@ onMounted(async () => {
       obstacle.h = Number(obstacle.h || 80)
 
       const prevRight = obstacle.x + obstacle.w
-      obstacle.x += obstacle.speed
+      obstacle.x += obstacle.speed * difficulty
       const currRight = obstacle.x + obstacle.w
 
       if (!obstacle.passed && prevRight >= player.x && currRight < player.x) {
         obstacle.passed = true
-        const award = 10
-        runScore += award
+        const award = 1
+        runScore += award/2
         floats.push({ x: obstacle.x + obstacle.w / 2, y: obstacle.y, text: `+${award}`, life: 60 })
       }
 
@@ -167,7 +189,8 @@ onMounted(async () => {
         player.y < obstacle.y + obstacle.h &&
         player.y + player.h > obstacle.y
       ) {
-        gameOver = true
+        gameOver.value = true
+      
         if (auth.user && runScore > 0) {
           profileStore
             .updateScore(auth.user.id, runScore)
@@ -191,13 +214,19 @@ onMounted(async () => {
       if (f.life <= 0) floats.splice(i, 1)
     }
 
-    const saved = Number(profileStore.profile?.score_balance || 0)
+    const saved = Number(profileStore.profile?.score_balance)
     ctx.font = '24px sans-serif'
     ctx.fillStyle = 'black'
     ctx.fillText(`Saved: ${saved}  Run: ${runScore}`, 20, 40)
 
-    if (!gameOver) requestAnimationFrame(animate)
+    if (!gameOver.value) requestAnimationFrame(animate)
   }
+  canvas.addEventListener('click', () => {
+    if (gameOver.value) {
+      resetGame()
+      requestAnimationFrame(animate)
+    }
+  })
   animate()
 })
 </script>
@@ -221,5 +250,10 @@ p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.game-over-card{
+  position: relative;
+  text-align: center;
+  top: 320px;
 }
 </style>
