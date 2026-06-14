@@ -1,6 +1,7 @@
 <template>
   <div>
     <button @click="logOut()" class="signOut">Log Out</button>
+    <button @click="stats()">Profile</button>
     <p v-if="logOutMsg">{{ logOutMsg }}</p>
   </div>
   <canvas id="canvas1"></canvas>
@@ -25,6 +26,10 @@ const router = useRouter()
 const auth = useAuthStore()
 const profileStore = useProfileStore()
 const gameOver = ref(false)
+
+function stats() {
+  router.push('/profiles')
+}
 
 async function logOut() {
   const { error } = await supabase.auth.signOut()
@@ -236,7 +241,7 @@ p {
   color: rgb(1, 200, 1);
   position: relative;
   left: 1020px;
-  bottom: 10px;
+  bottom: 116px;
 }
 .signOut {
   position: absolute;

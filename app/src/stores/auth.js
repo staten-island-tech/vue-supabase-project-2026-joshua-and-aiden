@@ -41,11 +41,22 @@ async signUp(email, password, username) {
   this.loading = true
   this.error = null
   try {
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { username }
+      }
+    })
     if (error) throw error
     const user = data.user
-    await supabase.from('profiles').insert([{ id: user.id, first_name: username }]).maybeSingle()
-    await supabase.from('scores').insert([{ user_id: user.id, score_balance: 0 }]).maybeSingle()
+    if (!user) throw new Error('Signup failed to return a user')
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .upsert({ id: user.id, first_name: username }, { onConflict: 'id' })
+      .maybeSingle()
+    if (profileError) throw profileError
+    await supabase.from('scores').upsert({ user_id: user.id, score_balance: 0 }, { onConflict: 'user_id' }).maybeSingle()
     this.user = user
     await router.push('/game')
     return user
@@ -54,12 +65,8 @@ async signUp(email, password, username) {
     throw err
   } finally {
     this.loading = false
-      }
-    },
-    async signOut() {
-      await supabase.auth.signOut()
-      this.user = null
-      await router.push('/login')
-    }
+  }
+},
+    
   }
 })
